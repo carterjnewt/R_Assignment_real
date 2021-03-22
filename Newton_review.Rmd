@@ -1,0 +1,80 @@
+---
+title: "Newton_review"
+author: "Carter Newton"
+date: "3/21/2021"
+output: html_document
+---
+
+## My Review
+\ 
+
+What I did for the review was I made a separate project in R where I basically followed your rmarkdown and copied your code line for line.
+I'll leave comments on what I got on my end and if there is anything to change.
+To reference certain code chunks I'll most likely state the line of the rmarkdown file that it correlates to so, for example "line 50: doesn't produce a data.frame on my end". 
+Hopefully this helps out and I'll give any other inputs I notice as I go along!
+ 
+***
+
+line 401-407: The read.delim command itself produced a data.frame file for me, it's not a big deal to include the data.frame conversion after it but taking it out would result in less files piling up in your environment. Or combine the two commands:
+
+```{r echo=TRUE, results='hide'}
+fang_test <- as.data.frame(read.delim("fang_et_al_genotypes.txt"))
+```
+\ 
+
+line 417-419: might be nice to mention to run library(tidyverse) beforehand I was so confused as to why the code wasn't working and I simply forgot to run that lol 
+\ 
+
+line 438: I retyped the code chunk twice and came up on the same error on this line "Error in `[.data.frame`)noheadsnp, order(noheadsnp[,1])] : undefined columns selected"
+
+I really don't know how to fix this error.  
+I also don't know where you use this file later on.  
+\ 
+
+My computer has now frozen twice trying to run "maizesnp <- data.frame(merge(ordernoheadm, noheadsnp))" and I'm wondering if its because the rows are not equal.  
+For "ordernoheadm" I have 982 rows and for "noheadsnp" I have 981 rows.  
+\ 
+
+I want to note that I think a large amount of issues I am running into with your project goes back to the very start:  
+
+- In your data formatting section (line: 194) you mention that your fang_et_al_genotypes file has 2783 lines 
+- However, when I ran line: 402 I produced a file containing 2782 lines.  
+- I can't explain why this happens on my end I am using the same files from the class github as you are obviously. However there is an easy fix to this on your end to make sure this doesn't happen to somebody else reproducing the project. You can use this code instead:
+
+```{r echo=TRUE, results='hide'}
+fang_f <- read.delim("fang_et_al_genotypes.txt", header = FALSE)
+fang_t <- read.delim("fang_et_al_genotypes.txt", header = TRUE)
+```
+
+- If header is true then you essentially have one less line than if header was false.
+  - pretty much header = false makes all lines in the file be within the table, while header = true makes the first row the names for the columns.  
+
+It basically adds more guidance and assures the command is outputting exactly what you want.  
+\ 
+
+I still think your values in lines: 432, 435, and 437 need to be looked at. Specifically how many rows you want to remove with the tail command.  
+I keep running into the position where I create all those files in that code chunk but they all don't match in length either by 1 or 2 rows.  
+I also believe my computer continues to freeze at line: 440 because your code is incomplete.  
+
+- You need to signify what columns you want to merge together becase you could have varying column names.
+- I'll insert the code from my project so you can see how I typed it out and compare it to yours
+\ 
+
+s_f <- merge(s, trans_f_rows_group, by.x="SNP_ID", by.y="Group", all=TRUE)
+\ 
+
+The code above is what mine looks like for when I merged my files together.  
+
+***
+
+## Other Comments
+\ 
+
+I wish I could keep going on with your other code to see the results but I simply can't.  
+I do want to note that lines: 460-480 would look nicer if they were in code chunks.  
+This is about all the input I can give since I can't test the other codes without their respective files.  
+I think you just need to double check your code that's inputted in your rmarkdown file and hopefully a couple tweaks will fix it up!  
+Last note, in your data formatting you use "fang_et_al_genotypes" and "snp_position" as variable names even though they aren't defined. I would assume those are then producing errors when you try to knit the file since you use those names in code chunks. It would probably be best to define "fang_et_al_genotypes.txt" and "snp_position.txt" as the "fang" and "snp" variables respectively before you start data formatting in your rmarkdown.
+
+
+
